@@ -1,8 +1,10 @@
 module Util where
 
-data ZERO : Set where
+open import Agda.Primitive
 
-data ONE : Set where
+data NULL {n : Level} : Set n where
+
+data ONE {n : Level} : Set n where
   one : ONE
 
 data Bool : Set where
