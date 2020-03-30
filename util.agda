@@ -9,7 +9,7 @@ open Eqal.≡-Reasoning using (begin_; step-≡; step-≡˘) renaming (_≡⟨�
 
 private
   variable
-    l ll : Level
+    l l' l1 l2 l3 : Level
 
 infixr 2 _=<_>_ _=^<_>_
 
@@ -51,15 +51,15 @@ switch-not' : forall {l} {b c : Bool {l}} -> b === not c -> not b === c
 switch-not' b=¬c = sym (switch-not (sym b=¬c))
 
 
-_&&_ : Bool {l} -> Bool {ll} -> Bool {l ~U~ ll}
+_&&_ : Bool {l1} -> Bool {l2} -> Bool {l1 ~U~ l2}
 _&&_ true true = true
 _&&_ _ _ = false
 
-_||_ : Bool {l} -> Bool {ll} -> Bool {l ~U~ ll}
+_||_ : Bool {l1} -> Bool {l2} -> Bool {l1 ~U~ l2}
 _||_ false false = false
 _||_ _ _ = true
 
-data sigma (A : Set l) (B : A -> Set ll) : Set (l ~U~ ll) where
+data sigma (A : Set l1) (B : A -> Set l2) : Set (l1 ~U~ l2) where
   <_,_> : (x : A) -> B x -> sigma A B
 
 sigma-syntax = sigma
@@ -67,7 +67,7 @@ infix 2 sigma-syntax
 syntax sigma-syntax A (\ x -> B) = exists x of A st B
 
 infixr 1 _or_
-data _or_ (A B : Set l) : Set l where
+data _or_ (A : Set l1) (B : Set l2) : Set (l1 ~U~ l2) where
   left : A -> A or B
   right : B -> A or B
 
