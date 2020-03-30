@@ -12,17 +12,17 @@ private
   variable
     l l' l1 l2 l3 : Level
 
-record MemIface {l} {Mem : Set l} : Set (lsuc l) where
-  coinductive
+record MemIface {l} (Mem : Set l) : Set (lsuc l) where
   field
 
     ptr : Mem -> Set l -> Set l
 
     empty : Mem
-    --this fist and does not work because for some weird reason the result cannot depend on itself -.-
+
     new : {A : Set l} -> (m : Mem) -> A -> m' of Mem and' ((ptr m' A) and (ptr m A -> ptr m' A))
     get : {A : Set l} -> (m : Mem) -> ptr m A -> A
     put : {A : Set l} -> (m : Mem) -> ptr m A -> A -> m' of Mem and' (ptr m A -> ptr m' A)
+    --TODO: Property that new actually gives a new pointer!
 
     new-prop : {A : Set l} -> (a : A) -> (m m' : Mem) -> (p : ptr m' A) ->
                                 (trans : ptr m A -> ptr m' A) ->
@@ -42,3 +42,5 @@ record MemIface {l} {Mem : Set l} : Set (lsuc l) where
                                   (trans : ptr m A -> ptr m' A) ->
                     < m' , << p , trans >> > === new m a ->
                     forall (p' : ptr m A) -> (get m p' === get m' (trans p'))
+
+open MemIface {{...}} public
